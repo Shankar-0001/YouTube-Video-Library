@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <title>Edit-Video</title>
+    <script>
+
+        function LoadCategories() {
+            $.ajax({
+                method: "get",
+                url: "http://127.0.0.1:4400/categories",
+                success: (categories) => {
+                    categories.map(category => {
+                        $(`<option value=${category.CategoryId}>${category.CategoryName}</option>`).appendTo("#Categories");
+                    })
+                }
+            })
+        }
+        $(function () {
+            var videoid = parseInt(localStorage.getItem("VideoId"));
+            LoadCategories();
+            $.ajax({
+                method: "get",
+                url: `http://127.0.0.1:4400/videos/${videoid}`,
+                success: (videos) => {
+                    $("#VideoId").val(videos[0].VideoId);
+                    $("#Title").val(videos[0].Title);
+                    $("#Url").val(videos[0].Url);
+                    $("#Likes").val(videos[0].Likes);
+                    $("#Views").val(videos[0].Views);
+                    $("#Categories").val(videos[0].CategoryId);
+                }
+            });
+
+            $("#btnSave").click(() => {
+                var video = {
+                    VideoId: parseInt($("#VideoId").val()),
+                    Title: $("#Title").val(),
+                    Url: $("#Url").val(),
+                    Likes: parseInt($("#Likes").val()),
+                    Views: parseInt($("#Views").val()),
+                    CategoryId: parseInt($("#Categories").val())
+                }
+                $.ajax({
+                    method: "put",
+                    url: `http://127.0.0.1:4400/updatevideo/${video.VideoId}`,
+                    data: video
+                })
+                alert("Video Updated");
+                location.href = "admin-home.html";
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <h2>EditVideo</h2>
+    <dl>
+        <dt>Video Id</dt>
+        <dd><input type="number" id="VideoId"></dd>
+        <dt>Title</dt>
+        <dd><input type="text" id="Title"></dd>
+        <dt>Url</dt>
+        <dd><input type="text" id="Url"></dd>
+        <dt>Likes</dt>
+        <dd><input type="number" id="Likes"></dd>
+        <dt>Views</dt>
+        <dd><input type="number" id="Views"></dd>
+        <dt>Category</dt>
+        <dd>
+            <select id="Categories"></select>
+        </dd>
+    </dl>
+    <button id="btnSave">Save</button>
+</body>
+
+</html>

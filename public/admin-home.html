@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <title>admin-Home</title>
+
+    <script>
+        function LoadVideos() {
+            $.ajax({
+                method: "get",
+                url: "http://127.0.0.1:4400/videos",
+                success: (videos) => {
+                    videos.map((video) => {
+                        $(`<tr>
+                             <td>${video.Title}</td> 
+                             
+                             <td>
+                                <iframe src=${video.Url} width="100" height="100"></iframe>
+                             </td>
+                             <td>
+                                <button value=${video.VideoId} id="btnEdit">Edit</button>
+                                <button value=${video.VideoId} id="btnDelete">Delete</button>
+                             </td>
+
+                             
+
+                           </tr>`).appendTo("tbody");
+                    })
+                }
+            })
+        }
+        $(function () {
+            LoadVideos();
+            $("#btnAddNew").click(() => {
+                location.href = "add-video.html";
+            })
+            $(document).on("click", "#btnEdit", (e) => {
+                localStorage.setItem("VideoId", e.target.value);
+                location.href = "edit-video.html";
+            })
+            $(document).on("click", "delete", (e) => {
+                var videoid = parseInt(e.target.value);
+                var flag = confirm("Are you sure\n Want to Delete");
+                if (flag == true) {
+                    $.ajax({
+                        method: "delete",
+                        url: `http://127.0.0.1:4400/deletevideo/${videoid}`
+                    });
+                    alert("Video Deleted");
+                    location.reload();
+                }
+            })
+        })
+    </script>
+
+</head>
+
+<body>
+    <h2>Admin-Home</h2>
+    <div>
+        <button id="btnAddNew">Add New Video</button>
+    </div>
+    <table width="100%" border="1">
+        <thead>
+            <tr>
+                <th>Video Title </th>
+                <th>Preview </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</body>
+
+</html>

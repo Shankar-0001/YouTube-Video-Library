@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function FetchClick() {
+            fetch("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY&quot")
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (obj) {
+                    obj.photos.map(function (item) {
+                        var div = document.createElement("div");
+                        div.className = "card m-2 p-2";
+                        div.style.width = "200px";
+                        div.innerHTML = `
+                        <a href=${item.img_src}><img src=${item.img_src} class="card-img-top" height="150"></a>
+                        <div class="card-header">
+                            <h3>${item.id}</h3>
+                        </div>
+                        <div class="card-body">
+                            <dl>
+                                <dt>Camera </dt>
+                                <dd>${item.camera.full_name}</dd>
+                                <dt>Rover</dt>
+                                <dd>${item.rover.full_name}</dd>
+                            </dl>
+                        </div>
+                    `;
+                        document.querySelector("main").appendChild(div);
+                    })
+                })
+        }
+        FetchClick();
+    </script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+
+<body class="container-fluid">
+    <!-- <button onclick="FetchClick()" class="btn btn-primary mb-4">Fetch Data</button> -->
+    <div class="container">
+        <main class="d-flex flex-wrap">
+
+        </main>
+    </div>
+</body>
+
+</html>

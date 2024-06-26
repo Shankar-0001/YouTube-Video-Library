@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <title>admin-Home</title>
+
+    <script>
+        function LoadVideos() {
+            $.ajax({
+                method: "get",
+                url: "http://127.0.0.1:4400/videos",
+                success: (videos) => {
+                    videos.map((video) => {
+                        $(`
+                            <iframe src=${video.Url} width="250" height="250" style="margin:20px;"  padding:"10px"></iframe>
+
+                        </div>
+                        
+                        `).appendTo("main");
+
+
+
+                    })
+                }
+            })
+        }
+
+        LoadVideos();
+    </script>
+
+
+    <!-- <style>
+        main {
+            width: 90%; 
+            margin: 0 auto;
+        }
+
+        h2 {
+            margin: 0 auto;
+        }
+    </style> -->
+
+
+</head>
+
+<body class="container-fluid">
+    <h2>Admin-Home</h2>
+    
+        <main class="d-flex flex-wrap">
+            <div class="title">
+
+            </div>
+        </main>
+
+
+</body>
+
+</html>

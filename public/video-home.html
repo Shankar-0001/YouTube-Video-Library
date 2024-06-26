@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/jquery.cookie/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            $("#UserId").html($.cookie("userid"));
+            $("button").click(() => {
+                $.removeCookie("userid");
+                location.href = "user-login.html";
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <h2>Video Home - <span id="UserId"></span></h2>
+    <button>Logout</button>
+</body>
+
+</html>

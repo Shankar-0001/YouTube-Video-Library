@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script>
+        $(function () {
+            $("#btnLogin").click(() => {
+                var userid = $("#UserId").val();
+                var password = $("#Password").val();
+                $.ajax({
+                    method: "get",
+                    url: "http://127.0.0.1:4400/admin",
+                    success: (users) => {
+                        for (var user of users) {
+                            if (user.UserId == userid && user.Password == password) {
+                                location.href = "admin-home.html";
+                                break;
+                            } else {
+                                $("p").html("Invalid Credentials").css("color", "red");
+                            }
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <h2>Admin Login</h2>
+    <dl>
+        <dt>UserId</dt>
+        <dd><input type="text" id="UserId"></dd>
+        <dt>Password</dt>
+        <dd><input type="password" id="Password"></dd>
+    </dl>
+    <button id="btnLogin">Login</button>
+    <p></p>
+</body>
+
+</html>
